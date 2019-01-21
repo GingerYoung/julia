@@ -2196,3 +2196,11 @@ j30385(T, y) = k30385(f30385(T, y))
 
 @test Base.return_types(Tuple, (NamedTuple{<:Any,Tuple{Any,Int}},)) == Any[Tuple{Any,Int}]
 @test Base.return_types(Base.splat(tuple), (typeof((a=1,)),)) == Any[Tuple{Int}]
+
+# Test PartialStruct for closures
+function foo(b)
+    a = 1
+    f = ()->(println(b); Val(a))
+    f()
+end
+@test @inferred(foo(b)) == Val(1)
